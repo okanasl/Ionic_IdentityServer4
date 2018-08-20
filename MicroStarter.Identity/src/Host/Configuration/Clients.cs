@@ -22,7 +22,8 @@ namespace Host.Configuration
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     RequireClientSecret = false,
-                    AccessTokenType = AccessTokenType.Reference,                    
+                    RequireConsent = false,                    
+                    AccessTokenType = AccessTokenType.Reference,            
                     RedirectUris = 
                     {
                        "http://localhost:8000",

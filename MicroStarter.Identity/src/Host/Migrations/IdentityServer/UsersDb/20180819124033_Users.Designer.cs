@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Host.Migrations.IdentityServer.UsersDb
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20180808234957_Users")]
+    [Migration("20180819124033_Users")]
     partial class Users
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -250,7 +250,7 @@ namespace Host.Controllers
         public async Task<IActionResult> Logout(LogoutViewModel model)
         {
             var idp = User?.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
-            var subjectId = HttpContext.User.Identity.GetSubjectId();
+            var subjectId = User.Identity.GetSubjectId();
 
             if (idp != null && idp != IdentityServerConstants.LocalIdentityProvider)
             {

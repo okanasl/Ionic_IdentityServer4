@@ -18,5 +18,5 @@ CREATE TABLE "PersistedGrants" (
 CREATE INDEX "IX_PersistedGrants_SubjectId_ClientId_Type" ON "PersistedGrants" ("SubjectId", "ClientId", "Type");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20180808234936_Grants', '2.1.1-rtm-30846');
+VALUES ('20180819124013_Grants', '2.1.1-rtm-30846');
 

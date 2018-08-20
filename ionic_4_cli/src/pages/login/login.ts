@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, ToastController, Platform } from 'ionic-angular';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { authConfig } from './authconfig';
 declare const window: any;
 declare var cordova:any;
 @Component({
@@ -29,7 +28,7 @@ export class LoginPage {
   login() {
     this.platform.ready().then(() => {
       this.oidcSecurityService.authorize((authUrl) => {
-        this.loginWithInnerAuth(authUrl).then(responseHash => {
+        this.loginInAppBrowser(authUrl).then(responseHash => {
             this.oidcSecurityService.authorizedCallback(responseHash);
         }, (error) => {
           console.log(error);
@@ -37,14 +36,28 @@ export class LoginPage {
       });
     });
   }
-  loginWithInnerAuth(authUrl) : Promise<any>
+  
+  logout(){
+    const endSessionUrl  = this.oidcSecurityService.getEndSessionUrl();
+    console.log(endSessionUrl);
+    this.platform.ready().then(() => {
+      this.logoutInAppBrowser(endSessionUrl).then((isLogout)=>{
+        if (isLogout)
+        {
+          console.log(isLogout)
+          this.oidcSecurityService.resetAuthorizationData(false);
+        }   
+      })        
+    });
+  }
+  loginInAppBrowser (url) : Promise<any>
   {
     return new Promise(function(resolve, reject) {
-      const browserRef = window.cordova.InAppBrowser.open(authUrl, '_blank',
+      const browserRef = window.cordova.InAppBrowser.open(url, '_blank',
         'location=no,clearsessioncache=yes,clearcache=yes');
-        browserRef.addEventListener('loadstop',(event) => {
+        browserRef.removeEventListener("exit", (event) => {});
+        browserRef.addEventListener('loadstop', (event) => {
           if ((event.url).indexOf('localhost:8000') !== -1) {
-            browserRef.removeEventListener("exit", (event) => {});
             browserRef.close();
             let lastIndex = event.url.lastIndexOf('#')
             if (lastIndex === -1){
@@ -58,34 +71,18 @@ export class LoginPage {
         });
     });
   }
-  logout(){
-    // TODO:
-    // Should get endSessionUrl
-    const endSessionUrl  = authConfig.stsServer;
-    this.platform.ready().then(() => {
-      this.logoutWithIFrame(endSessionUrl).then((isLogout)=>{
-        if (isLogout)
-        {
-          // TODO:
-          // Reset Auth Data
-          this.oidcSecurityService.refreshSession();
-        }   
-      })        
-    });
-  }
-
-  logoutWithIFrame(endSessionUrl) : Promise<any> {
+  logoutInAppBrowser (url) : Promise<any>
+  {
     return new Promise(function(resolve, reject) {
-      const browserRef = window.cordova.InAppBrowser.open(endSessionUrl, '_blank',
-        'location=no,clearsessioncache=yes,clearcache=yes,hidden=yes');
-        browserRef.addEventListener('loadstop',(event) => {
-          if ((event.url).indexOf('localhost:5000') !== -1) {
-            browserRef.removeEventListener("exit", (event) => {});
-            browserRef.close();            
-            resolve(true)
-          }else{
-            reject("Check your identityserver redirect uri")
-          }
+      const browserRef = window.cordova.InAppBrowser.open(url, '_blank',
+        'location=no,clearsessioncache=yes,clearcache=yes');
+        browserRef.removeEventListener("exit", (event) => {});
+        browserRef.addEventListener('loadstop', (event) => {
+          if ((event.url).indexOf('localhost:8000/loggedout') !== -1)
+          {
+            browserRef.close();
+            resolve(true); 
+          }          
         });
     });
   }

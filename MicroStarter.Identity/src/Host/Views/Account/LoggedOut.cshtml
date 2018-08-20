@@ -9,7 +9,7 @@
     @if (Model.PostLogoutRedirectUri != null)
     {
         <div>
-            Click <a href="@Model.PostLogoutRedirectUri">here</a> to return to the
+            Click <a id="logout-redirect-button" href="@Model.PostLogoutRedirectUri">here</a> to return to the
             <span>@Model.ClientName</span> application.
         </div>
     }
@@ -19,3 +19,11 @@
         <iframe style="display:none" width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
     }
 </div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            window.location.href = $('#logout-redirect-button').attr('href');
+        })            
+    </script>
+}

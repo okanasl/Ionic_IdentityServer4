@@ -106,5 +106,5 @@ CREATE INDEX "EmailIndex" ON "AspNetUsers" ("NormalizedEmail");
 CREATE UNIQUE INDEX "UserNameIndex" ON "AspNetUsers" ("NormalizedUserName");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20180808234957_Users', '2.1.1-rtm-30846');
+VALUES ('20180819124033_Users', '2.1.1-rtm-30846');
 

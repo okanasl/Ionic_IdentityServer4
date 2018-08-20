@@ -226,5 +226,5 @@ CREATE INDEX "IX_IdentityClaims_IdentityResourceId" ON "IdentityClaims" ("Identi
 CREATE UNIQUE INDEX "IX_IdentityResources_Name" ON "IdentityResources" ("Name");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20180808234948_Config', '2.1.1-rtm-30846');
+VALUES ('20180819124023_Config', '2.1.1-rtm-30846');
 
